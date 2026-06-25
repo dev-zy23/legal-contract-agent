@@ -274,3 +274,16 @@ def format_metrics_table(results: List[CategoryMetrics]) -> str:
         f"{total_tp:>3}/{total_fp:>3}/{total_fn:>3}/{total_tn:>3}"
     )
     return "\n".join(lines)
+
+
+# ====================================================================
+# Real detector registration (optional)
+# ====================================================================
+# The RAG-backed detector lives in eval/rag_detector.py and needs rag.py's deps
+# (onnxruntime / jieba / httpx) plus a built index. Register it when available so
+# the stub baselines above still work in a bare environment.
+try:
+    from eval.rag_detector import rag_detector
+    DETECTORS["rag"] = rag_detector
+except ImportError:
+    pass  # RAG deps not installed; stub baselines remain usable
